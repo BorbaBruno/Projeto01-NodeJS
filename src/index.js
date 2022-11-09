@@ -1,11 +1,11 @@
-const { v4: uuidv4 } = require('uuid')
-const express = require('express')
+const { v4: uuidv4 } = require('uuid');
+const express = require('express');
 
-const app = express()
+const app = express();
 
-app.use(express.json())
+app.use(express.json());
 
-const customers = []
+const customers = [];
 
 /*
  CPF = String
@@ -16,7 +16,6 @@ const customers = []
 
 app.post('/account', (request, response) => {
   const { cpf, name } = request.body
-
   const customerAlreadyExists = customers.some(
     (customers) => customers.cpf === cpf
   )
@@ -33,6 +32,12 @@ app.post('/account', (request, response) => {
   })
 
   return response.status(201).send()
-})
+});
 
-app.listen(3333)
+app.get('/statement/:cpf', (request, response) => {
+  const { cpf } = request.params;
+  const customer = customers.find(customer => customer.cpf === cpf);
+  return response.json(customer.statement);
+});
+
+app.listen(3333);
